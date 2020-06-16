@@ -1,10 +1,9 @@
 import React from 'react';
-import { getWeatherDataForLocation, getMyLocation } from '../functions';
+import { getWeatherData } from '../functions';
 
 const LocateButton = ({ setLocationsWeatherData }) => {
   const handleGetNearbyWeather = async () => {
-    const location = await getMyLocation();
-    const weatherData = await getWeatherDataForLocation(location);
+    const weatherData = await getWeatherData();
     setLocationsWeatherData(weatherData);
   }
 

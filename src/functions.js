@@ -1,15 +1,19 @@
-export const getMyLocation = () => {
+const getMyLocation = () => {
   return new Promise(function (resolve, reject) {
     navigator.geolocation.getCurrentPosition(resolve, reject);
   });
 }
 
-export const searchForLocation = async (locationName) => {
-  const url = `http:/api.openweathermap.org/data/2.5/weather?q=${ locationName }&appid=1ba19cef59cef00a5fa51974b914656c`
-  const response = await fetch(url);
-  const location = await response.json();
+export const getLocationWeatherByName = async (locationName) => {
+  try {
+    const url = `http://api.openweathermap.org/data/2.5/weather?q=${ locationName }&appid=1ba19cef59cef00a5fa51974b914656c`
+    const response = await fetch(url);
+    const city = await response.json();
 
-  return location;
+    return city;
+  } catch(error) {
+    return error.message
+  }
 }
 
 const getNearbyPlaces = async (latitude, longitude) => {
@@ -34,9 +38,11 @@ const getNearbyWeather = async (nearbyPlaces) => {
   return nearbyWeather;
 }
 
-export const getWeatherDataForLocation = async (location) => {
-  const latitude  = location.coords.latitude;
-  const longitude = location.coords.longitude;
+export const getWeatherData = async () => {
+  const myLocation = await getMyLocation();
+
+  const latitude  = myLocation.coords.latitude;
+  const longitude = myLocation.coords.longitude;
 
   const nearby = await getNearbyPlaces(latitude, longitude);
 
