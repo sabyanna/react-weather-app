@@ -12,7 +12,7 @@ export const getLocationWeatherByName = async (locationName) => {
 
     return city;
   } catch(error) {
-    return error.message
+    return { error }
   }
 }
 

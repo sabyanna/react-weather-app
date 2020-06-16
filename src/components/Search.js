@@ -3,10 +3,16 @@ import { getLocationWeatherByName } from '../functions';
 
 const Search = ({ setLocationsWeatherData }) => {
   const [ locationName, setLocationName ] = useState('');
+  const [ error, setError ] = useState();
 
   const handleSearchLocation = async () => {
     const weatherData = await getLocationWeatherByName(locationName);
-    setLocationsWeatherData([ weatherData ]);
+    if (weatherData.message) {
+      setError(weatherData.message)
+    } else {
+      setLocationsWeatherData([ weatherData ]);
+      setError();
+    }
   }
 
   const handleOnChangeName = event => {
@@ -24,6 +30,11 @@ const Search = ({ setLocationsWeatherData }) => {
       <button type="button" className="btn btn-dark" onClick={ handleSearchLocation }>
         Search
       </button>
+      { error &&
+        <div class="alert alert-danger" role="alert">
+          { error }
+        </div>
+      }
     </>
   )
 };
