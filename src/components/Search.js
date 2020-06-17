@@ -6,12 +6,16 @@ const Search = ({ setLocationsWeatherData }) => {
   const [ error, setError ] = useState();
 
   const handleSearchLocation = async () => {
-    const weatherData = await getLocationWeatherByName(locationName);
-    if (weatherData.message) {
-      setError(weatherData.message)
-    } else {
-      setLocationsWeatherData([ weatherData ]);
-      setError();
+    try {
+      const weatherData = await getLocationWeatherByName(locationName);
+      if (weatherData.message) {
+        setError(weatherData.message)
+      } else {
+        setLocationsWeatherData([ weatherData ]);
+        setError();
+      }
+    } catch {
+      alert('Error');
     }
   }
 
@@ -25,13 +29,14 @@ const Search = ({ setLocationsWeatherData }) => {
         type="text"
         className="form-control"
         placeholder='Enter a city name'
-        onChange={ handleOnChangeName }>
+        onChange={ handleOnChangeName }
+        style={{marginBottom: "10px"}}>
       </input>
       <button type="button" className="btn btn-dark" onClick={ handleSearchLocation }>
         Search
       </button>
       { error &&
-        <div class="alert alert-danger" role="alert">
+        <div className="alert alert-danger" role="alert">
           { error }
         </div>
       }
